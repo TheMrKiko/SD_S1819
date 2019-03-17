@@ -15,13 +15,11 @@
 		<mainclass>pt.tecnico.sd.App</mainclass>
 	</properties>
 	<dependencies>
-		<!--
 		<dependency>
 			<groupId>pt.tecnico.sd</groupId>
 			<artifactId>config-helper</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		-->
 </dependencies>
 	<build>
 		<plugins>

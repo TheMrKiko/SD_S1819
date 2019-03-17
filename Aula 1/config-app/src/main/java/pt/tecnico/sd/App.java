@@ -22,12 +22,12 @@ public class App
     	System.out.println();System.out.println();
 
     	// This code has a dependency on "ConfigHelper" module
-    	/*
+    	
      	ConfigHelper configHelper = new ConfigHelper();
     	String min = configHelper.getConfigValue("min");
     	System.out.println("Configured Min: " + min);
     	configHelper.printSomeProperties();
     	System.out.println();System.out.println();System.out.println();
-    	*/
+    	
     }
 }
