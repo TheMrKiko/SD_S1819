@@ -1,10 +1,13 @@
 package example;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public class SocketServer 
@@ -35,18 +38,46 @@ public class SocketServer
 
         // Receive data until client closes the connection
         String response;
+        ArrayList<String> list = new ArrayList<>();
+
         while (true) {
         	//Reads a line of text. 
         	//A line ends with a line feed ('\n').
         	response = in.readLine();
-        	if(response == null) {
+        	list.add(response);
+        	if(response.isEmpty()) {
         		break;
         	}
         	System.out.printf("Received message with content: '%s'%n", response);      	
         }
 
+        int value = Integer.parseInt(list.get(1));
+        list.set(1, Integer.toString(value + 1));
+
+
+        String message = "SD2019\n";
+
+        message += list.get(1);
+
+        message += "\n";
+
+        Date a = new Date();
+        message += a.toString();
+        message += "\n";
+
+        DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+
+        // Send text to server as bytes
+        out.writeBytes(message);
+        out.writeBytes("\n");
+        System.out.println("Sent text: " + message);
+
+
+
         // Close connection to current client
         clientSocket.close();
+
+
         System.out.println("Closed connection with client");
 
         // Close server socket
