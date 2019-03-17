@@ -1,0 +1,47 @@
+//
+// Protocol buffers definition for Hello World
+//
+syntax = "proto3";
+package ttt.grpc;
+
+
+message CurrentBoardRequest {
+}
+
+message CheckWinnerRequest {
+}
+
+message CurrentBoardResponse {
+  string board = 1;
+}
+
+message CheckWinnerResponse {
+  int32 intei = 1;
+}
+
+message PlayResponse{
+  bool bo = 1;
+}
+
+message PlayRequest{
+  int32 linha = 1;
+  int32 coluna = 2;
+  int32 jogador = 3;
+}
+
+message InfoRequest {
+  int32 jogador = 1;
+}
+
+message InfoResponse {
+  int32 njogs = 1;
+}
+
+// Defining a Service, a Service can have multiple RPC operations
+service TTTService {
+  // Define a RPC operation
+  rpc currentBoard(CurrentBoardRequest) returns (CurrentBoardResponse);
+  rpc play(PlayRequest) returns (PlayResponse);
+  rpc checkWinner(CheckWinnerRequest) returns (CheckWinnerResponse);
+  rpc info(InfoRequest) returns (InfoResponse);
+}
