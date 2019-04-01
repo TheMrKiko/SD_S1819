@@ -11,16 +11,9 @@ import org.komparator.supplier.domain.Purchase;
 import org.komparator.supplier.domain.QuantityException;
 import org.komparator.supplier.domain.Supplier;
 
-// TODO
-//@WebService(
-//		endpointInterface = "org.komparator.supplier.ws.SupplierPortType", 
-//		wsdlLocation = "...", 
-//		name = "SupplierWebService", 
-//		portName = "...Port", 
-//		targetNamespace = "...", 
-//		serviceName = "...Service"
-//)
-public class SupplierPortImpl { // implements SupplierPortType {
+@HandlerChain(file = "/supplier-ws_handler-chain.xml")
+@WebService(endpointInterface = "org.komparator.supplier.ws.SupplierPortType", wsdlLocation = "supplier.wsdl", name = "SupplierWebService", portName = "SupplierPort", targetNamespace = "http://ws.supplier.komparator.org/", serviceName = "SupplierService")
+public class SupplierPortImpl implements SupplierPortType {
 
 	// end point manager
 	private SupplierEndpointManager endpointManager;
@@ -51,22 +44,18 @@ public class SupplierPortImpl { // implements SupplierPortType {
 		return null;
 	}
 
+	@Override
 	public List<ProductView> searchProducts(String descText) throws BadText_Exception {
 		// TODO
-		
-		
-		
-		
+
 		return null;
 	}
 
+	@Override
 	public String buyProduct(String productId, int quantity)
 			throws BadProductId_Exception, BadQuantity_Exception, InsufficientQuantity_Exception {
 		// TODO
-		
-		
-		
-		
+
 		return null;
 	}
 
