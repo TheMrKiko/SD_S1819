@@ -178,3 +178,4 @@ buildNumber.properties
 .idea/
 
 *.zip
+settings.json
