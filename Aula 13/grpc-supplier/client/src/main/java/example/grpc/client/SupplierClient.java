@@ -3,17 +3,41 @@ package example.grpc.client;
 /* helper to print binary in hexadecimal */
 import static javax.xml.bind.DatatypeConverter.printHexBinary;
 
+import java.io.InputStream;
+import java.security.Key;
+import java.security.MessageDigest;
+import java.util.Arrays;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 /* classes are generated from protobuf definitions */
 import example.grpc.ProductsRequest;
 import example.grpc.ProductsResponse;
+import example.grpc.SignedResponse;
+import example.grpc.Signature;
 import example.grpc.SupplierGrpc;
 
 /* grpc library */
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-
 public class SupplierClient {
+
+	public static Key readKey(String resourcePath) throws Exception {
+		System.out.println("Reading key from resource " + resourcePath + " ...");
+
+		InputStream fis = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+		byte[] encoded = new byte[fis.available()];
+		fis.read(encoded);
+		fis.close();
+
+		System.out.println("Key:");
+		System.out.println(printHexBinary(encoded));
+		SecretKeySpec keySpec = new SecretKeySpec(encoded, "AES");
+
+		return keySpec;
+	}
 
 	public static void main(String[] args) throws Exception {
 		System.out.println(SupplierClient.class.getSimpleName() + " starting ...");
@@ -52,7 +76,21 @@ public class SupplierClient {
 
 		// make the call using the stub
 		System.out.printf("%nRemote call...%n%n");
-		ProductsResponse response = stub.listProducts(request);
+		SignedResponse response = stub.listProducts(request);
+
+		MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+		byte[] plainBytes = response.getResponse().toByteArray();
+		messageDigest.update(plainBytes);
+		byte[] digest = messageDigest.digest();
+
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		cipher.init(Cipher.ENCRYPT_MODE, readKey("secret.key"));
+		byte[] cipherBytes = cipher.doFinal(digest);
+
+		if (Arrays.equals(cipherBytes, response.getSignature().getValue().toByteArray()))
+			System.out.println("Signature is valid! Message accepted! :)");
+		else
+			System.out.println("Signature is invalid! Message rejected! :(");
 
 		// print response
 		System.out.println("Received response:");

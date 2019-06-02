@@ -29,3 +29,7 @@ Check that the desired POM is selected and 'Finish'.
 ----
 
 [SD Faculty](mailto:leic-sod@disciplinas.tecnico.ulisboa.pt)
+
+
+Na aula adicionámos a cifra do lado do servidor e do cliente, mas não conseguimos fazer a leitura da chave.
+Não fizemos a alínea secreta.
